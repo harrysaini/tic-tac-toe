@@ -5,7 +5,8 @@ export class Board extends Component{
 	
 	getSingleRowJSX(i){
 
-		var squareJSX;
+		var squareJSX,
+			rowArr=[];
 
 		for(var j=0;j<3;j++){
 			squareJSX = (
@@ -15,20 +16,19 @@ export class Board extends Component{
 				);
 			rowArr.push[squareJSX];
 		}
+
+		return rowArr;
 	}
 
 	getBoardJSX(){
+
 		var boardRowArr = [],
-		rowArr,
 		boardRowJSX;
 
-		for(var i=0;i<3;i++){
-			
-			rowArr=getSingleRowJSX(i);
-			
+		for(var i=0;i<3;i++){						
 			boardRowJSX = (
 				<div className='board-row'>
-				{rowArr}
+				{this.getSingleRowJSX(i)}
 				</div> 
 				);
 			boardRowArr.push(boardRowJSXrd)
@@ -40,7 +40,7 @@ export class Board extends Component{
 
 		return (
 			<div class="board">
-			{this.getBoardJSX}
+			{this.getBoardJSX()}
 			</div>
 			);
 	}
