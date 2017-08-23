@@ -11,11 +11,11 @@ export class ScoreBoard extends React.Component{
 
 		return (
 			<div className="score-board">
-				<div className = 'first-score'>
+				<div className = 'score-div first-score'>
 					<div> Player 1 </div>
 					<div> {this.props.firstPlayerScore} </div>
 				</div>
-				<div className = 'second-score'>
+				<div className = 'score-div second-score'>
 					<div> {secondName} </div>
 					<div> {this.props.secondPlayerScore} </div>
 				</div>

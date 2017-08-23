@@ -10,11 +10,11 @@ export class Board extends Component{
 
 		for(var j=0;j<3;j++){
 			squareJSX = (
-				<div className={'square' , 'square-'+i+'-'+j} >
+				<div className={'square square-'+i+'-'+j} key={i+'-'+j}>
 				<Square />
 				</div>
 				);
-			rowArr.push[squareJSX];
+			rowArr.push(squareJSX);
 		}
 
 		return rowArr;
@@ -27,20 +27,23 @@ export class Board extends Component{
 
 		for(var i=0;i<3;i++){						
 			boardRowJSX = (
-				<div className='board-row'>
+				<div className='board-row' key={i}>
 				{this.getSingleRowJSX(i)}
 				</div> 
 				);
-			boardRowArr.push(boardRowJSXrd)
+			boardRowArr.push(boardRowJSX)
 		}
+		return boardRowArr;
 	}
 	
 
 	render(){
 
 		return (
-			<div class="board">
-			{this.getBoardJSX()}
+			<div className="board-wrapper">
+				<div className="board">
+				{this.getBoardJSX()}
+				</div>
 			</div>
 			);
 	}

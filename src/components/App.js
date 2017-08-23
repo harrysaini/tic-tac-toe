@@ -5,7 +5,11 @@ export class App extends Component{
 	
 	render(){
 		return (
-			<GameContainer />
+			<div className='main-container'>
+				<div className="game-box">
+					<GameContainer />
+				</div>
+			</div>
 		);
 	}
 }
