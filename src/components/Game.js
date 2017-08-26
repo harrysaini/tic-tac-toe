@@ -3,6 +3,8 @@ import {TurnDisplayer} from './TurnDisplayer';
 import {ScoreBoard} from './ScoreBoard';
 import {Board} from './Board';
 import { Result } from './Result';
+import { ResetButton } from './ResetButton';
+
 
 export class Game extends React.Component{
 	
@@ -10,7 +12,8 @@ export class Game extends React.Component{
 
 		var resultDivJSX , 
 			scoreBoardJSX,
-			turnDisplayerJSX;
+			turnDisplayerJSX,
+			resetBtnJSX;
 
 		scoreBoardJSX = (
 			<ScoreBoard 
@@ -22,8 +25,13 @@ export class Game extends React.Component{
 
 		turnDisplayerJSX = (
 			<TurnDisplayer
-				nextPlayer = {this.props.nextPlayer}
+				currentPlayer = {this.props.currentPlayer}
 				gameType = {this.props.gameType}
+			/>
+			);
+		resetBtnJSX = (
+			<ResetButton
+				onClick={this.props.handleResetClick}
 			/>
 			);
 
@@ -33,6 +41,7 @@ export class Game extends React.Component{
 			
 			resultDivJSX = (
 			<Result
+				isTied = {this.props.isTied}
 				winner = {this.props.winner}
 				gameType = {this.props.gameType}
 			/>
@@ -40,10 +49,12 @@ export class Game extends React.Component{
 
 			return (
 				<div className="game-box-inner">
+					{resetBtnJSX}
 					{resultDivJSX}
 					{scoreBoardJSX}
 					<Board 
 						isFinished={true}
+						isTied={this.props.isTied}
 						winSquares={this.props.winSquares}
 						square={this.props.square} 
 					/>
@@ -54,6 +65,7 @@ export class Game extends React.Component{
 
 			return (
 				<div className="game-box-inner">
+					{resetBtnJSX}
 					{scoreBoardJSX}
 					<Board 
 						square={this.props.square} 

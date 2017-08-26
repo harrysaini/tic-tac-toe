@@ -16,12 +16,19 @@ export class Result extends React.Component{
 			if(this.props.winner==='playerOne')
 				msg = 'Player 1 won :)';
 			else
-				msg = "Player two won :) ";
+				msg = "Player 2 won :) ";
+		}
+		if(this.props.isTied){
+			msg = "It's a tie ;) ";
 		}
 
 		return (
-			<div className="result-div">
-				{msg}
+			<div>
+				<div className="result-div">
+					{msg}
+				</div>
+				<div className="result-div-background">
+				</div>
 			</div>
 				
 		);

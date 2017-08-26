@@ -2,6 +2,9 @@ import React from 'react';
 import { Game } from './Game';
 import { SelectGameType } from './SelectGameType';
 import { SelectGameSymbol } from './SelectGameSymbol';
+import { calculateNextMove } from '../helpers/nextMove';
+import { calculateWinner } from '../helpers/resultCalc';
+
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 export class GameContainer extends React.Component{
@@ -13,64 +16,23 @@ export class GameContainer extends React.Component{
 			nextSymbol : "X",
 			gameState : "select-game-type",
 			isFinished : false,
+			isTied : false,
 			playerOneSymbol : "",
 			playerTwoSymbol : "",
 			playerOneScore : 0,
 			playerTwoScore : 0,
 			gameType : '',
-			nextPlayer : ''
+			currentPlayer : '',
+			winner : '',
+			winSquares : null
 
 		};
 		this.handleSquareClick = this.handleSquareClick.bind(this);
 		this.handleGameTypeSelect = this.handleGameTypeSelect.bind(this);
 		this.handleGameSymbolSelect = this.handleGameSymbolSelect.bind(this);
+		this.handleResetClick = this.handleResetClick.bind(this);
 	}
 
-	/*
-	* function to check if line is matched
-	*/
-	isLineFilled(square,indexes){
-		if(square[indexes[0][0]][indexes[0][1]] && square[indexes[0][0]][indexes[0][1]] === square[indexes[1][0]][indexes[1][1]] && square[indexes[1][0]][indexes[1][1]] === square[indexes[2][0]][indexes[2][1]]){
-			return true;
-		}else{
-			return false;
-		}
-
-	}
-
-	/*
-	* function to calculate winner
-	*/
-	calculateWinner(square){
-		var winSquences = [
-			['0-0','0-1','0-2'],
-			['0-0','1-0','2-0'],
-			['0-0','1-1','2-2'],
-			['0-1','1-1','2-1'],
-			['0-2','1-2','2-2'],
-			['0-2','1-1','2-0'],
-			['1-0','1-1','1-2'],
-			['2-0','2-1','2-2']
-		];
-
-		for(var i=0;i<winSquences.length;i++){
-			var sequence = winSquences[i];
-			var indexes = sequence.map(function(seq){
-				return seq.split('-');
-			});
-			if(this.isLineFilled(square , indexes) ){
-				return {
-					isFinished : true,
-					winSquares : sequence,
-					winSymbol  : square[indexes[0][0]][indexes[0][1]]
-				}
-			}
-		}
-
-		return {
-			isFinished : false
-		}
-	}
 
 
 	findWinner(symbol){
@@ -80,6 +42,94 @@ export class GameContainer extends React.Component{
 		else{
 			return 'playerTwo';
 		}
+	}
+
+
+	/*
+	*Restart game
+	*/
+	startNewGame(){
+		setTimeout(function(){
+			this.setState({
+				square : [[null,null,null],[null,null,null],[null,null,null]],
+				nextSymbol : this.state.playerOneSymbol,
+				gameState : "game-is-on",
+				isFinished : false,
+				isTied : false,
+				currentPlayer : "playerOne",
+				winner : '',
+				winSquares : null
+			});
+
+		}.bind(this) , 3000 );
+	}
+
+
+	/*
+	*Function to play computers part
+	*/
+	playComputerPart(){
+		var square,
+			result,
+			nextMove = calculateNextMove(this.state.square);
+		
+		square = this.state.square.slice(0);
+
+		square[nextMove[0]][nextMove[1]] =  this.state.nextSymbol;
+
+		result = calculateWinner(square);
+		//console.log('c',result);
+
+
+		if(result.isFinished){
+			this.handleGameFinish(square , result );
+		}else{
+			this.setState({
+				square : square,
+				nextSymbol : (this.state.nextSymbol==="X") ? "0" : "X",
+				currentPlayer : this.state.currentPlayer === "playerOne" ? "playerTwo" : "playerOne"
+			});
+
+		}
+	}
+
+	/*
+	*Function to handle game 
+	*/
+	handleGameFinish(square , result ){
+		this.setState({
+			gameState : "finished",
+			isFinished : true,
+			winner : this.findWinner(result.winSymbol),
+			playerOneScore : this.findWinner(result.winSymbol)==='playerOne' ? this.state.playerOneScore + 1 : this.state.playerOneScore,
+			playerTwoScore : this.findWinner(result.winSymbol)==='playerTwo' ? this.state.playerTwoScore + 1 : this.state.playerTwoScore,
+			square : square,
+			winSquares : result.winSquares
+		});
+
+		this.startNewGame();
+	}
+
+	/*
+	*handle reset btn click
+	*/
+	handleResetClick(){
+		this.setState({
+			square : [[null,null,null],[null,null,null],[null,null,null]],
+			nextSymbol : "X",
+			gameState : "select-game-type",
+			isFinished : false,
+			isTied : false,
+			playerOneSymbol : "",
+			playerTwoSymbol : "",
+			playerOneScore : 0,
+			playerTwoScore : 0,
+			gameType : '',
+			currentPlayer : '',
+			winner : '',
+			winSquares : null
+
+		});
 	}
 
 	/*
@@ -96,27 +146,39 @@ export class GameContainer extends React.Component{
 
 		square[i][j] =  this.state.nextSymbol;
 
-		result = this.calculateWinner(square);
+		result = calculateWinner(square);
+		
+		//if game is tied return
+		if(result.isFinished && result.isTied){
+			this.setState({
+				isTied : true,
+				isFinished : true
+			});
+
+			this.startNewGame();
+			return;
+		}
 		
 		if(result.isFinished){
-			this.setState({
-				gameState : "finished",
-				isFinished : true,
-				winner : this.findWinner(result.winSymbol),
-				playerOneScore : this.findWinner(result.winSymbol)==='playerOne' ? this.state.playerOneScore + 1 : this.state.playerOneScore,
-				playerTwoScore : this.findWinner(result.winSymbol)==='playerTwo' ? this.state.playerTwoScore + 1 : this.state.playerTwoScore,
-				square : square,
-				winSquares : result.winSquares
-			})
+
+			this.handleGameFinish(square , result );
+
 		}else{
 			this.setState({
 				square : square,
 				nextSymbol : (this.state.nextSymbol==="X") ? "0" : "X",
-				nextPlayer : this.state.nextPlayer === "playerOne" ? "playerTwo" : "playerOne"
+				currentPlayer : this.state.currentPlayer === "playerOne" ? "playerTwo" : "playerOne"
 			});
-		}
 
+		}
 		
+	}
+
+
+	componentDidUpdate(prevProps, prevState) {
+		if(this.state.gameType==="computer" && this.state.currentPlayer==="playerTwo" && !this.state.isFinished && !this.state.isTied){			
+			this.playComputerPart();
+		}
 	}
 
 
@@ -149,7 +211,7 @@ export class GameContainer extends React.Component{
 				playerOneSymbol : "X",
 				playerTwoSymbol : "0",
 				nextSymbol : "X",
-				nextPlayer : "playerOne"
+				currentPlayer : "playerOne"
 			});
 
 		}else if(symbol==="0"){
@@ -159,7 +221,7 @@ export class GameContainer extends React.Component{
 				playerOneSymbol : "0",
 				playerTwoSymbol : "X",
 				nextSymbol : "0",
-				nextPlayer : "playerOne"
+				currentPlayer : "playerOne"
 			});
 		}
 	}
@@ -170,7 +232,7 @@ export class GameContainer extends React.Component{
 
 
 	render(){
-		console.log('main-render');
+		//console.log('main-render');
 
 		var displayedComponents;
 
@@ -201,28 +263,34 @@ export class GameContainer extends React.Component{
 					playerOneScore={this.state.playerOneScore}
 					playerTwoScore={this.state.playerTwoScore}
 					isFinished={this.state.isFinished}
+					isTied={this.state.isTied}
 					winSquares={this.state.winSquares}
+					winner={this.state.winner}
 					square={this.state.square}
 					onSquareClick={this.handleSquareClick}
 					gameType={this.state.gameType}
-					nextPlayer={this.state.nextPlayer}
+					currentPlayer={this.state.currentPlayer}
+					handleResetClick={this.handleResetClick}
 				/>
 			);
 		}
 
 		return (
 			<div>
-				<ReactCSSTransitionGroup
-					transitionName="fade"
-					transitionAppear={true}
-					transitionAppearTimeout={700}
-					transitionEnterTimeout={700}
-					transitionLeaveTimeout={700}
-				>
+				
 				{displayedComponents}
-				</ReactCSSTransitionGroup>
+				
 			</div>
 
 			);
 	}
 }
+
+// <ReactCSSTransitionGroup
+// 					transitionName="fade"
+// 					transitionAppear={true}
+// 					transitionAppearTimeout={700}
+// 					transitionEnterTimeout={700}
+// 					transitionLeaveTimeout={700}
+// 				>
+// 				</ReactCSSTransitionGroup>

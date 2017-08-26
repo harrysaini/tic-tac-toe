@@ -12,14 +12,24 @@ export class Board extends Component{
 
 			//if game is finished render without click 
 			if(this.props.isFinished){
-				squareJSX = (
-					<Square 
-						isWinSquare={ this.props.winSquares.indexOf(i+'-'+j)!==-1 ? true : false }
-						isFilled={ this.props.square[i][j] ? true : false}
-						key = {i+"-"+j}
-						value={this.props.square[i][j]} 					
-					/>
-				);
+				if(this.props.isTied){
+					squareJSX = (
+						<Square 
+							isFilled={ this.props.square[i][j] ? true : false}
+							key = {i+"-"+j}
+							value={this.props.square[i][j]} 					
+						/>
+					);
+				}else{
+					squareJSX = (
+						<Square 
+							isWinSquare={ this.props.winSquares.indexOf(i+'-'+j)!==-1 ? true : false }
+							isFilled={ this.props.square[i][j] ? true : false}
+							key = {i+"-"+j}
+							value={this.props.square[i][j]} 					
+						/>
+					);
+				}
 			}else{
 				squareJSX = (
 						<Square 

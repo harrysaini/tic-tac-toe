@@ -15,6 +15,8 @@ export class App extends Component{
 					inspired by punnu sir the great
 					<br/>
 					built by  harish
+					<br/>
+					&copy; aashish bawa
 				</div>
 			</div>
 		);
