@@ -5,9 +5,16 @@ export class App extends Component{
 	
 	render(){
 		return (
-			<div className='main-container'>
-				<div className="game-box">
-					<GameContainer />
+			<div>
+				<div className='main-container'>
+					<div className="game-box">
+						<GameContainer />
+					</div>
+				</div>
+				<div className="credits">
+					inspired by punnu sir the great
+					<br/>
+					built by  harish
 				</div>
 			</div>
 		);

@@ -9,11 +9,34 @@ export class Board extends Component{
 			rowArr=[];
 
 		for(var j=0;j<3;j++){
-			squareJSX = (
-				<div className={'square square-'+i+'-'+j} key={i+'-'+j}>
-				<Square />
-				</div>
+
+			//if game is finished render without click 
+			if(this.props.isFinished){
+				squareJSX = (
+					<Square 
+						isWinSquare={ this.props.winSquares.indexOf(i+'-'+j)!==-1 ? true : false }
+						isFilled={ this.props.square[i][j] ? true : false}
+						key = {i+"-"+j}
+						value={this.props.square[i][j]} 					
+					/>
 				);
+			}else{
+				squareJSX = (
+						<Square 
+							isFilled={ this.props.square[i][j] ? true : false}
+							key = {i+"-"+j}
+							value={this.props.square[i][j]} 
+							onClick={(function(j,self){
+
+										return function(){	
+											var k = j;
+											this.props.onClick(i,k);	
+										}.bind(self);
+
+									})(j , this)} 
+						/>
+					);
+			}
 			rowArr.push(squareJSX);
 		}
 
@@ -28,7 +51,7 @@ export class Board extends Component{
 		for(var i=0;i<3;i++){						
 			boardRowJSX = (
 				<div className='board-row' key={i}>
-				{this.getSingleRowJSX(i)}
+					{this.getSingleRowJSX(i)}
 				</div> 
 				);
 			boardRowArr.push(boardRowJSX)
@@ -42,7 +65,7 @@ export class Board extends Component{
 		return (
 			<div className="board-wrapper">
 				<div className="board">
-				{this.getBoardJSX()}
+					{this.getBoardJSX()}
 				</div>
 			</div>
 			);
