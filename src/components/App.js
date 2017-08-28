@@ -7,6 +7,7 @@ export class App extends Component{
 		return (
 			<div>
 				<div className='main-container'>
+					<div className="game-heading">tic-tac-toe</div>
 					<div className="game-box">
 						<GameContainer />
 					</div>

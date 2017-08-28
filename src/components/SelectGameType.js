@@ -5,7 +5,7 @@ export class SelectGameType extends React.Component{
 	render(){
 		return (
 			
-			<div className={'select-game-type'} >
+			<div className={'select-div select-game-type'} >
 				<h3>Would you like to play as</h3>
 				<div 
 					className={'select-game-options game-btn'}

@@ -5,7 +5,7 @@ export class SelectGameSymbol extends React.Component{
 	render(){
 		return (
 			
-			<div className='select-game-symbol' >
+			<div className='select-div select-game-symbol' >
 
 				<h3>Select your symbol</h3>
 				<div 

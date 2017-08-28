@@ -11,7 +11,6 @@ export function areAllSquaresFilled(square){
 			}
 		}
 	}
-	console.log(count);
 	if(count===9){
 		return true;
 	}else{
@@ -46,12 +45,6 @@ export function calculateWinner(square){
 	['2-0','2-1','2-2']
 	];
 
-	if(areAllSquaresFilled(square)){
-		return {
-			isFinished : true,
-			isTied : true
-		}
-	}
 
 	for(var i=0;i<winSquences.length;i++){
 		var sequence = winSquences[i];
@@ -64,6 +57,14 @@ export function calculateWinner(square){
 				winSquares : sequence,
 				winSymbol  : square[indexes[0][0]][indexes[0][1]]
 			}
+		}
+	}
+
+	//if all squares are filled , game is tie
+	if(areAllSquaresFilled(square)){
+		return {
+			isFinished : true,
+			isTied : true
 		}
 	}
 
