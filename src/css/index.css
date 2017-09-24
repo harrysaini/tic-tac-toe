@@ -16,7 +16,7 @@ body{
 	background: #0d1a26;
 	margin-top:10%;
 	position: relative;
-    box-shadow: 0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12), 0 3px 5px -1px rgba(0,0,0,0.3);
+	box-shadow: 0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12), 0 3px 5px -1px rgba(0,0,0,0.3);
 
 }
 
@@ -33,11 +33,6 @@ body{
 	background: transparent;
 }
 
-@media only screen and (max-width :450px ){
-	.main-conatiner{
-		width : 90%;
-	}
-}
 
 .game-box{
 	font-family: 'Architects Daughter', Helvetica, sans-serif;
@@ -92,8 +87,8 @@ body{
 
 .square{
 	width: 50px;
-    height: 50px;
-    padding: 10px;
+	height: 50px;
+	padding: 10px;
 	display: inline-table;
 	background: #204060;
 	margin: 2px;
@@ -117,7 +112,7 @@ body{
 
 
 .select-div{
-	padding: 25px 15px 50px 30px;
+	padding: 25px 15px 50px 15px;
 }
 
 .select-first-turn{
@@ -146,12 +141,12 @@ body{
 
 
 .credits{
-    margin-top: 100px;
-    text-align: center;
-    font-size: 90%;
-    font-style: italic;
-    font-family: monospace;
-    color: #0D1A75;
+	padding-top: 100px;
+	text-align: center;
+	font-size: 90%;
+	font-style: italic;
+	font-family: monospace;
+	color: #0D1A75;
 }
 
 .score-num{
@@ -160,35 +155,35 @@ body{
 }
 
 .turn-displayer{
-    padding: 7px;
-    margin: auto;
-    margin-top: 25px;
+	padding: 7px;
+	margin: auto;
+	margin-top: 25px;
 	color: #d9e6f2;
-    background: #2d5986;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    width: 70%; 
+	background: #2d5986;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	width: 70%; 
 }
 
 .result-div{
-    font-size: xx-large;
-    z-index: 2;
-    position: absolute;
-    width: 100%;
-    top : 150px;
-    color: #b3cce6;
-    left: 0px;
+	font-size: xx-large;
+	z-index: 2;
+	position: absolute;
+	width: 100%;
+	top : 150px;
+	color: #b3cce6;
+	left: 0px;
 }
 
 .result-div-background{
-    position: absolute;
+	position: absolute;
 	z-index: 1;
 	width: 100%;
-    height: 100%;
+	height: 100%;
 	background: #0d1a26;
-    opacity: 0.85;
-    top : 0px;
-    left: 0px;
+	opacity: 0.85;
+	top : 0px;
+	left: 0px;
 }
 
 .reset-btn{
@@ -267,4 +262,38 @@ body{
 	height: 0px;
 	transition: opacity 700ms;
 
+}
+
+
+@media only screen and (max-width: 40em) {
+	.main-container{
+		width : 85%;
+		margin-top: 25%;
+	}
+
+	h3 {
+		font-size: 1.10rem;
+	}
+
+	.select-div {
+		padding: 25px 5px 50px 5px;
+	}
+
+	.game-box{
+		padding: 5px;
+		padding-bottom: 0px;
+	}
+
+	.game-btn {
+		margin: 10px;
+	}
+
+	.reset-btn {
+		padding: 2px;
+		font-size: 90%;
+	}
+
+	.credits {
+		padding-top: 75px;
+	}
 }
