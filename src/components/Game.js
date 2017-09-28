@@ -70,6 +70,7 @@ export class Game extends React.Component{
 					<Board 
 						square={this.props.square} 
 						onClick={this.props.onSquareClick}
+						isAICalculating={this.props.isAICalculating}
 					/>
 					{turnDisplayerJSX}
 				</div>

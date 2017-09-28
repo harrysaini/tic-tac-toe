@@ -4,6 +4,41 @@ import React from 'react';
 
 export class TurnDisplayer extends React.Component{
 	
+	
+
+	constructor(props){
+		super(props);
+		this.timeInterval ; 
+		
+
+		this.state={
+			animClass : ""
+		}
+	}
+
+	componentWillUpdate(nextProps, nextState) {
+		if(this.props.currentPlayer !==nextProps.currentPlayer){
+			this.setState({
+				animClass : 'slide-me-up-down'
+			});
+			clearInterval(this.timeInterval);
+		}
+	}
+
+
+	componentDidUpdate(){
+		this.timeInterval =  setTimeout(function(){
+			if(this.state.animClass!==""){
+				this.setState({
+					animClass : ''
+				});
+			}
+			
+		}.bind(this),700);
+	}
+
+	
+
 	render(){
 		
 
@@ -28,7 +63,7 @@ export class TurnDisplayer extends React.Component{
 
 			
 			
-			<div className="turn-displayer">
+			<div className={'turn-displayer '+this.state.animClass}>
 			{displayTurn}
 			</div>
 			

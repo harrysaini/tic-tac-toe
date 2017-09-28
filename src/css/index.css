@@ -49,6 +49,7 @@ body{
 
 .game-box-inner{
 	padding-top: 20px;
+	padding-bottom: 60px;
 }
 
 .score-board{
@@ -155,15 +156,76 @@ body{
 }
 
 .turn-displayer{
+	position: absolute;
+	bottom: 0px;
+	left : 15% ;
 	padding: 7px;
 	margin: auto;
-	margin-top: 25px;
 	color: #d9e6f2;
 	background: #2d5986;
 	border-top-left-radius: 10px;
 	border-top-right-radius: 10px;
 	width: 70%; 
 }
+
+
+.slide-me-up-down{
+	overflow: hidden;
+	animation-name: slide-down-up;
+	animation-duration: 0.7s;
+}
+
+@keyframes slide-down-up{
+	
+	0%{	
+		padding: 7px;
+		opacity: 1;
+		max-height: 150px;
+	}
+
+	25% {
+		padding: 0px 7px;
+		opacity: 0.75;
+		max-height: 0px;
+
+	}
+
+	
+	75% {
+		padding: 0px 7px;
+		opacity: 0.75;
+		max-height: 0px;
+
+	}
+
+	100%{	
+		padding: 7px;
+		opacity: 1;
+		max-height: 150px;
+	}
+}
+
+.slide-me-down{
+	overflow: hidden;
+	animation-name: slide-down;
+	animation-duration: 0.7s;
+}
+
+@keyframes slide-down{
+	
+	from{	
+		padding: 7px;
+		opacity: 1;
+		max-height: 150px;
+	}
+	to {
+		padding: 0px 7px;
+		opacity: 0.75;
+		max-height: 0px;
+
+	}
+}
+
 
 .result-div{
 	font-size: xx-large;

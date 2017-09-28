@@ -26,7 +26,8 @@ export class GameContainer extends React.Component{
 			gameType : '',
 			currentPlayer : '',
 			winner : '',
-			winSquares : null
+			winSquares : null,
+			isAICalculating : false
 
 		};
 		this.handleSquareClick = this.handleSquareClick.bind(this);
@@ -59,7 +60,8 @@ export class GameContainer extends React.Component{
 				isFinished : false,
 				isTied : false,
 				winner : '',
-				winSquares : null
+				winSquares : null,
+				isAICalculating : false
 			});
 
 		}.bind(this) , 3000 );
@@ -71,8 +73,8 @@ export class GameContainer extends React.Component{
 	*/
 	playComputerPart(){
 		var square,
-			result,
-			nextMove;
+		result,
+		nextMove;
 		
 		square = this.state.square.clone2DArray();
 		
@@ -99,6 +101,7 @@ export class GameContainer extends React.Component{
 			this.handleGameFinish(square , result );
 		}else{
 			this.setState({
+				isAICalculating : false,
 				square : square,
 				currentSymbol : (this.state.currentSymbol==="X") ? "0" : "X",
 				currentPlayer : this.state.currentPlayer === "playerOne" ? "playerTwo" : "playerOne"
@@ -151,7 +154,7 @@ export class GameContainer extends React.Component{
 	*/
 	handleSquareClick(i,j){
 		var square,
-			result;
+		result;
 		square = this.state.square.clone2DArray();
 
 		if(square[i][j]){
@@ -185,18 +188,27 @@ export class GameContainer extends React.Component{
 				currentPlayer : this.state.currentPlayer === "playerOne" ? "playerTwo" : "playerOne"
 			});
 
+			if(this.state.gameState==="game-is-on" && this.state.gameType==="computer" && !this.state.isFinished && !this.state.isTied){			
+				this.setState({
+					isAICalculating :  true
+				});
+				setTimeout(function(){
+					this.playComputerPart();
+				}.bind(this) , 200);
+			}
+
 		}
 		
 	}
 
 
-	componentDidUpdate(prevProps, prevState) {
-		if(this.state.gameState==="game-is-on" && this.state.gameType==="computer" && this.state.currentPlayer==="playerTwo" && !this.state.isFinished && !this.state.isTied){			
-			setTimeout(function(){
-				this.playComputerPart();
-			}.bind(this) , 200);
-		}
-	}
+	// componentDidUpdate(prevProps, prevState) {
+	// 	if(this.state.gameState==="game-is-on" && this.state.gameType==="computer" && this.state.currentPlayer==="playerTwo" && !this.state.isFinished && !this.state.isTied){			
+	// 		setTimeout(function(){
+	// 			this.playComputerPart();
+	// 		}.bind(this) , 200);
+	// 	}
+	// }
 
 
 	/*
@@ -249,6 +261,16 @@ export class GameContainer extends React.Component{
 			currentPlayer : player,
 			currentSymbol : player==='playerOne' ? this.state.playerOneSymbol : this.state.playerTwoSymbol
 		});
+
+
+		if(this.state.gameType==="computer" && player==="playerTwo" && !this.state.isFinished && !this.state.isTied){			
+			this.setState({
+				isAICalculating :  true
+			});
+			setTimeout(function(){
+				this.playComputerPart();
+			}.bind(this) , 400);
+		}
 	}
 	
 
@@ -263,27 +285,27 @@ export class GameContainer extends React.Component{
 			
 			displayedComponents = (				
 				<SelectGameType
-					handleGameTypeSelect={this.handleGameTypeSelect}
-					key = "select-game-type"
+				handleGameTypeSelect={this.handleGameTypeSelect}
+				key = "select-game-type"
 				/>
-			);
+				);
 
 		}else if(this.state.gameState==="select-game-symbol"){
 			
 			displayedComponents = (
 				<SelectGameSymbol 
-					key="select-game-symbol"
-					handleGameSymbolSelect ={this.handleGameSymbolSelect}
+				key="select-game-symbol"
+				handleGameSymbolSelect ={this.handleGameSymbolSelect}
 				/>	
-			);
+				);
 		}
 		
 		if(this.state.gameState==="game-to-start"){
 			displayedComponents = (
 				<SelectFirstTurn
-					key="select-first-turn"
-					gameType={this.state.gameType}
-					handleFirstTurnSelect={this.handleFirstTurnSelect}
+				key="select-first-turn"
+				gameType={this.state.gameType}
+				handleFirstTurnSelect={this.handleFirstTurnSelect}
 				/>
 				);
 		}
@@ -292,26 +314,27 @@ export class GameContainer extends React.Component{
 			
 			displayedComponents = ( 
 				<Game 
-					playerOneScore={this.state.playerOneScore}
-					playerTwoScore={this.state.playerTwoScore}
-					isFinished={this.state.isFinished}
-					isTied={this.state.isTied}
-					winSquares={this.state.winSquares}
-					winner={this.state.winner}
-					square={this.state.square}
-					onSquareClick={this.handleSquareClick}
-					gameType={this.state.gameType}
-					currentPlayer={this.state.currentPlayer}
-					handleResetClick={this.handleResetClick}
+				playerOneScore={this.state.playerOneScore}
+				playerTwoScore={this.state.playerTwoScore}
+				isFinished={this.state.isFinished}
+				isTied={this.state.isTied}
+				winSquares={this.state.winSquares}
+				winner={this.state.winner}
+				square={this.state.square}
+				onSquareClick={this.handleSquareClick}
+				gameType={this.state.gameType}
+				currentPlayer={this.state.currentPlayer}
+				isAICalculating={this.state.isAICalculating}
+				handleResetClick={this.handleResetClick}
 				/>
-			);
+				);
 		}
 
 		return (
 			<div>
-				
-				{displayedComponents}
-				
+
+			{displayedComponents}
+
 			</div>
 
 			);
